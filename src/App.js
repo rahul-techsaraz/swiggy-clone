@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'
+import '../index.css'
 import Header from './components/Header';
 import Body from './components/Body';
 /**
@@ -15,6 +15,7 @@ import Body from './components/Body';
  */
 
 const AppLayout = () => {
+  console.log(<Body />)
   return (
     <>
       <Header />

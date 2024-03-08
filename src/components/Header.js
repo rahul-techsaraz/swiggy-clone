@@ -1,16 +1,18 @@
+import { LOGO_URL } from "../utils/constants";
+
 export default function Header() {
     return (
         <>
             <div className="header">
                 <div className="">
-                    <img className="logo" src={"https://t3.ftcdn.net/jpg/04/03/74/22/360_F_403742248_8DDzcFF4jw05lWqftk2yxzKRpFvpZ01Y.jpg"} alt="app logo"/>
+                    <img className="logo" src={LOGO_URL} alt="app logo"/>
                 </div>
                 <div className="nav-items">
                     <ul>
                         <li>Home</li>
                         <li>About Us</li>
                         <li>Services</li>
-                        <li>Restro</li>
+                        <li>Cart</li>
 
                     </ul>
                 </div>

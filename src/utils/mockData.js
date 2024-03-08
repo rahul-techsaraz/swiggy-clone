@@ -1,8 +1,4 @@
-import React from 'react'
-import RestroCard from './RestroCard'
-
-export default function Body() {
-    const resList = [
+ export const resList = [
                   {
                     "info": {
                       "id": "29436",
@@ -1718,18 +1714,3 @@ export default function Body() {
                     }
                   }
                 ]
-  return (
-      <div className='body'>
-          <div className='search'>Search</div>
-          <div className='res-container'>
-              {resList.map((data,index) => (
-              <RestroCard  resData={data.info} key={data.info.id}   />
-                  
-              ))}
-             
-
-          </div>
-          
-    </div>
-  )
-}
