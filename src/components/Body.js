@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import RestroCard from './RestroCard';
 import { SWIGGY_API_ENDPOINT } from '../utils/constants';
 import Shimmer from './Shimmer';
+import { Link } from 'react-router-dom';
 
 export default function Body() {
   //Special State Variable
@@ -13,6 +14,7 @@ export default function Body() {
     const res = await fetch(SWIGGY_API_ENDPOINT);
     const json = await res.json();
     const restroList = await json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+    console.log(restroList)
     setResData(restroList)
     //;
 //card.card.gridElements.infoWithStyle.restaurants
@@ -59,7 +61,7 @@ export default function Body() {
           </div>
           <div className='res-container'>
               {resData.map((data,index) => (
-              <RestroCard  resData={data?.info} key={data?.info.id}   />
+              <Link to={"/restaurants/"+data?.info.id}><RestroCard  resData={data?.info} key={data?.info.id}   /></Link>
                   
               ))}
              
