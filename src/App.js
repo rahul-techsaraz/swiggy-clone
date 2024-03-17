@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,lazy, Suspense} from 'react';
 import ReactDOM from 'react-dom/client';
 import '../index.css';
 import Header from './components/Header';
@@ -8,6 +8,9 @@ import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
 import Error from './components/Error';
 import RestaurantMenu from './components/RestaurantMenu';
+import { lazy } from 'react';
+//import Grocery from './components/Grocery';
+const Grocery = lazy(() => import('./components/Grocery'))
 /**
  * -Header
  *  -Logo
@@ -64,6 +67,10 @@ const router = createBrowserRouter(
       {
             path: '/contact',
             element:<ContactUs />
+          },
+          {
+            path: '/grocery',
+            element:<Suspense ><Grocery /></Suspense>
           },
        {
             path: '/restaurants/:resId',

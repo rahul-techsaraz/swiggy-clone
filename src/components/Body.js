@@ -4,6 +4,10 @@ import { SWIGGY_API_ENDPOINT } from '../utils/constants';
 import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
 
+//Chunking
+//Lazy Loading
+//Dynamic Loading
+
 export default function Body() {
   //Special State Variable
 

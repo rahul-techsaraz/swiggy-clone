@@ -1,5 +1,4 @@
 import React, { useEffect,useState } from 'react'
-import { SWIGGY_MENU_API_ENDPOINT } from '../utils/constants';
 import Shimmer from './Shimmer';
 import { useParams } from 'react-router-dom';
 import '../css/restaurantMenu.css'
@@ -8,77 +7,43 @@ import nonVegLogo from '../images/Non-Veg-Logo.png'
 import downarrow from '../images/Down-Arrow.png'
 import uparrow from '../images/Up-Arrow.png'
 import { CDN_URL } from '../utils/constants';
+import useRestroMenu from '../utils/hooks/useRestroMenu';
+import useStatusOnline from '../utils/hooks/useStatusOnline';
 
 export default function RestaurantMenu() {
-    const [menuData, setMenuData] = useState([]);
+    const [activeCategory, setActiveCategory] = useState({index:0,isActive:true});
     const {resId} = useParams();
-    useEffect(() => {
-        fetchData();
-    }, []);
-    const fetchData = async () => {
-        const data = await fetch(`https://corsproxy.io/?https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.8666634&lng=77.5741212&restaurantId=${resId}&catalog_qa=undefined&submitAction=ENTER`);
-        const json = await data.json();
-        const menuDetails= json?.data?.cards;
-        setMenuData(menuDetails);
-        //console.log(json?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards)
-    }
+    const menuData = useRestroMenu(resId);
+    const onlineStatus = useStatusOnline();
+
+    if (!onlineStatus) {
+         return <h1>You're offline</h1>
+     }
      if (menuData.length === 0) {
         return <Shimmer />
     }
-    //console.log(menuData)
     const { name, costForTwoMessage, avgRating, sla, cuisines, city, locality, totalRatingsString, feeDetails } = menuData[0]?.card?.card?.info
-    console.log(menuData[0]?.card?.card?.info)
     const data = menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.map(item => {
         if (item.card.card.itemCards !== undefined) {
             return item.card.card.itemCards; 
         }
     }).filter(item => item !== undefined)
-    //console.log(data)
-    const  itemCards  = data;
+    const itemCards = data
     
-   const handelList= (e)=>{
-    if(e.target.parentElement.childNodes[1].alt === 'down-pointer-logo'){
-        // console.log(e.target.parentElement.parentElement.parentElement.getElementsByClassName('hide'))
-        // console.log(e.target.parentElement.parentElement.parentElement.getElementsByClassName('hide').length)
-        for(let i=0; i<e.target.parentElement.parentElement.parentElement.getElementsByClassName('hide').length; i++){
-            e.target.parentElement.parentElement.parentElement.getElementsByClassName('hide')[i].classList.add('show')
-            e.target.parentElement.parentElement.parentElement.getElementsByClassName('hide')[i].classList.remove('hide')
+    const handelList = (index) => {
+        if (index === activeCategory.index) {
+       setActiveCategory({index,isActive:!activeCategory.isActive});
+        } else {
+            
+       setActiveCategory({index,isActive:true});
         }
-        e.target.parentElement.childNodes[1].src = uparrow
-        e.target.parentElement.childNodes[1].alt = 'up-pointer-logo'
         
-    }else{
-        // console.log(e.target.parentElement.parentElement.parentElement.getElementsByClassName('show'))
-        // console.log(e.target.parentElement.parentElement.parentElement.getElementsByClassName('show').length)
-        for(let i=0; i<e.target.parentElement.parentElement.parentElement.getElementsByClassName('show').length; i++){
-            e.target.parentElement.parentElement.parentElement.getElementsByClassName('show')[i].classList.add('hide')
-            e.target.parentElement.parentElement.parentElement.getElementsByClassName('show')[i].classList.remove('show')
-        }
-        e.target.parentElement.childNodes[1].src = downarrow
-        e.target.parentElement.childNodes[1].alt = 'down-pointer-logo'
     }
-    // console.log(e.target.parentElement.parentElement.parentElement.getElementsByClassName('hide'))
-    // const elements = e.target.parentElement.parentElement.parentElement.childNodes
-    // console.log(typeof(elements[1].classList.value) )
-    // const element = elements.filter((e)=>(e.classList.value.includes('hide')))
-    // console.log(element)
-   }
+  
     
    
   return (
-    //   <div classNameName='menu'>
-    //       <h3>{name}</h3>
-    //       <h4>{avgRating}</h4>
-    //       <h4>{costForTwoMessage}</h4>
-    //       <h4>Menu</h4>
-    //       <ul>
-    //           {itemCards?.map(item => (<li>{item?.card?.info?.name} - RS- { item?.card?.info?.price/100 }</li>))}
-             
-
-    //       </ul>
-
-          
-    // </div>
+  
     <>
         <div className="main-container">
         <div className="main-container-wrapper">
@@ -123,13 +88,13 @@ export default function RestaurantMenu() {
             </div>
             {itemCards.map((item,index)=>(<div>
             <div className="menulist-container">
-                <button onClick={(e)=>handelList(e)}>
+                <button onClick={(e)=>handelList(index)}>
                     <h3>Recommended <span>(15)</span></h3>
                     <img src={uparrow} alt="down-pointer-logo" width="20px" height="20px"/>
                 </button>
             </div>
             {itemCards[index].map(item=>(
-                <div className="menulist-item-container hide">
+                <div className={`menulist-item-container ${activeCategory.index === index  && activeCategory.isActive ? 'show' : 'hide'}`}>
                 <div className="menulist-item-inner-container">
                     <div className="menulist-item-inner-container2">
                         <div>
