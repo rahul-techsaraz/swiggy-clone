@@ -13,8 +13,9 @@ export default function Body() {
   const fetchData = async () => {
     const res = await fetch(SWIGGY_API_ENDPOINT);
     const json = await res.json();
+    console.log(json)
     const restroList = await json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-    console.log(restroList)
+    //console.log(restroList)
     setResData(restroList)
     //;
 //card.card.gridElements.infoWithStyle.restaurants
@@ -29,13 +30,14 @@ export default function Body() {
     setResData([])
   }
   const handleSearch = (filterValue) => {
-    console.log(count)
+    //console.log(count)
     const filteredData = [].filter(data =>  data.info.name.includes(filterValue));
     setResData(filteredData);
     setCount(count+1)
   }
   useEffect(() => {
-    setInterval(fetchData(),6000)
+    // setInterval(fetchData(),6000)
+    fetchData()
   },[])
   useEffect(() => {
     handleSearch(searchString);

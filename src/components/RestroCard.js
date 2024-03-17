@@ -2,7 +2,7 @@ import React from 'react'
 import { CDN_URL } from '../utils/constants';
 
 export default function RestroCard(props) {
-    const { name, avgRating, sla, cuisines,cloudinaryImageId } = props.resData;
+    const { name, avgRating, sla, cuisines, cloudinaryImageId } = props.resData;
   return (
       <div className='res-card'>
           <img className='res-logo' src={CDN_URL+cloudinaryImageId} alt="res thumbnail" />
