@@ -22,13 +22,15 @@ export default function RestaurantMenu() {
      if (menuData.length === 0) {
         return <Shimmer />
     }
-    const { name, costForTwoMessage, avgRating, sla, cuisines, city, locality, totalRatingsString, feeDetails } = menuData[0]?.card?.card?.info
+    console.log(menuData)
+    const { name, costForTwoMessage, avgRating, sla, cuisines, city, locality, totalRatingsString, feeDetails, category } = menuData[0]?.card?.card?.info
     const data = menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.map(item => {
         if (item.card.card.itemCards !== undefined) {
             return item.card.card.itemCards; 
         }
     }).filter(item => item !== undefined)
     const itemCards = data
+    console.log(itemCards)
     
     const handelList = (index) => {
         if (index === activeCategory.index) {
@@ -71,7 +73,7 @@ export default function RestaurantMenu() {
                 </div>
                 <div className="delivery-fee">
                     <img src={deliveryLogo} alt="delivery-logo"/>
-                    <p>3 kms | ₹{feeDetails.fees[0].fee/100} Delivery fee will apply</p>
+                    <p>3 kms | ₹{feeDetails?.fees[0]?.fee/100} Delivery fee will apply</p>
                 </div>
                 <hr className="doted-hr"/>
                 <div className="delivery-time-rate-containor">
@@ -89,7 +91,7 @@ export default function RestaurantMenu() {
             {itemCards.map((item,index)=>(<div>
             <div className="menulist-container">
                 <button onClick={(e)=>handelList(index)}>
-                    <h3>Recommended <span>(15)</span></h3>
+                    <h3>{category} <span>(15)</span></h3>
                     <img src={uparrow} alt="down-pointer-logo" width="20px" height="20px"/>
                 </button>
             </div>

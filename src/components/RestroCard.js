@@ -8,8 +8,8 @@ export default function RestroCard(props) {
           <img className='res-logo' src={CDN_URL+cloudinaryImageId} alt="res thumbnail" />
           <h1>{ name}</h1>
           <h4>{avgRating} Star</h4>
-          <h4>{sla.deliveryTime} Mins</h4>
-          <h4>{cuisines.join(" , ")}</h4>
+          <h3>{sla.deliveryTime} Mins</h3>
+          <h5>{cuisines.join(" , ")}</h5>
     </div>
   )
 }

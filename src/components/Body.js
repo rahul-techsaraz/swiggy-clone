@@ -12,40 +12,49 @@ export default function Body() {
   //Special State Variable
 
   const [resData, setResData] = useState([]);
-  const [count,setCount] = useState(0)
+  const [filteredDatas, setFilteredDatas] = useState([])
+  const [apiResp, setApiResp] = useState(true)
+  //const [count,setCount] = useState(0)
   let [searchString, setSearchString] = useState('');
   const fetchData = async () => {
     const res = await fetch(SWIGGY_API_ENDPOINT);
+    setApiResp(res.ok)
     const json = await res.json();
-    console.log(json)
+    //console.log(json)
     const restroList = await json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-    //console.log(restroList)
     setResData(restroList)
-    //;
-//card.card.gridElements.infoWithStyle.restaurants
+    setFilteredDatas(restroList)
+    
 }
+//console.log(filteredDatas)
   //Normal JS Variable
   // const normalJSVariable = resList;
   const handleFilter = () => {
     const filteredData = resData.filter(data => data.info.avgRating > 4.5);
-    setResData(filteredData)
+    //console.log(filteredData)
+    setFilteredDatas(filteredData)
   }
   const clearFilter = () => {
-    setResData([])
+    setFilteredDatas(resData)
   }
   const handleSearch = (filterValue) => {
     //console.log(count)
-    const filteredData = [].filter(data =>  data.info.name.includes(filterValue));
-    setResData(filteredData);
-    setCount(count+1)
+    const filteredData = resData.filter(data =>  data.info.name.toUpperCase().includes(filterValue));
+    //console.log(filteredData)
+    setFilteredDatas(filteredData);
+    //setCount(count+1)
   }
   useEffect(() => {
     // setInterval(fetchData(),6000)
     fetchData()
+    
   },[])
   useEffect(() => {
-    handleSearch(searchString);
+    handleSearch(searchString.toUpperCase());
   }, [searchString])
+  useEffect(()=>{
+
+  },[filteredDatas])
 
   //Conditional rendering
 
@@ -55,7 +64,7 @@ export default function Body() {
 
   return (
     <>
-      {
+      {apiResp === true ?
 
       resData.length === 0 ? (<Shimmer />) : (
       <div className='body'>
@@ -66,7 +75,8 @@ export default function Body() {
 
           </div>
           <div className='res-container'>
-              {resData.map((data,index) => (
+              {filteredDatas.length === 0 ? <div>No Records Found for your search</div> : 
+              filteredDatas.map((data,index) => (
               <Link to={"/restaurants/"+data?.info.id}><RestroCard  resData={data?.info} key={data?.info.id}   /></Link>
                   
               ))}
@@ -75,7 +85,8 @@ export default function Body() {
           </div>
           
     </div>
-    ) }
+    ):
+    <div><h1>Something went wrong...</h1><h3>work under process. we will be back soon</h3></div>}
     </>
     
     
