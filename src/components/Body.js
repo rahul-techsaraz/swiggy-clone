@@ -7,7 +7,19 @@ import { Link } from 'react-router-dom';
 //Chunking
 //Lazy Loading
 //Dynamic Loading
+ const withPrometedRestCard = (Component) => {
+console.log(Component)
+   return (props) => {
+    console.log(props)
+    return (
+      <>
+      <span className='absolute m-3  p-4 bg-orange-400'>Top Rated</span>
+      <Component {...props} />
+      </>
+    )
+  }
 
+}
 export default function Body() {
   //Special State Variable
 
@@ -25,7 +37,8 @@ export default function Body() {
     setResData(restroList)
     setFilteredDatas(restroList)
     
-}
+  }
+  const WithPromotedComponent = withPrometedRestCard(RestroCard);
 //console.log(filteredDatas)
   //Normal JS Variable
   // const normalJSVariable = resList;
@@ -53,7 +66,7 @@ export default function Body() {
     handleSearch(searchString.toUpperCase());
   }, [searchString])
   useEffect(()=>{
-
+console.log(resData)
   },[filteredDatas])
 
   //Conditional rendering
@@ -77,7 +90,9 @@ export default function Body() {
           <div className='flex flex-wrap'>
               {filteredDatas.length === 0 ? <div>No Records Found for your search</div> : 
               filteredDatas.map((data,index) => (
-              <Link to={"/restaurants/"+data?.info.id}><RestroCard  resData={data?.info} key={data?.info.id}   /></Link>
+                <Link to={"/restaurants/" + data?.info.id} key={data?.info.id}>
+                  {data.info.avgRating > 4.1 ? <WithPromotedComponent resData={data?.info} key={data?.info.id} />  :<RestroCard resData={data?.info} key={data?.info.id} />}
+                </Link>
                   
               ))}
              
@@ -92,3 +107,5 @@ export default function Body() {
     
   )
 }
+//HOC=> COmponent that recived the a another component as parameter or can return a compoenent
+

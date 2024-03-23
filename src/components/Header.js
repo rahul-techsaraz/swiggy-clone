@@ -15,8 +15,8 @@ import { Link } from "react-router-dom";
     // },[isLoggedIn])
     return (
         <>
-            <h1>{uniqueNum}</h1>
-            <button onClick = {() =>  generateUniqueNumber()}>generateUniqueNumber</button>
+            {/* <h1>{uniqueNum}</h1>
+            <button onClick = {() =>  generateUniqueNumber()}>generateUniqueNumber</button> */}
             <div className="flex justify-between bg-pink-100 items-center">
                 <div className="">
                     <img className="h-20 w-66" src={LOGO_URL} alt="app logo"/>

@@ -5,13 +5,15 @@ import '../css/restaurantMenu.css'
 import deliveryLogo from '../images/Delivery_fee_logo.avif'
 import nonVegLogo from '../images/Non-Veg-Logo.png'
 import downarrow from '../images/Down-Arrow.png'
-import uparrow from '../images/Up-Arrow.png'
+import uparrow from '../images/Up-Arrow.png';
 import { CDN_URL } from '../utils/constants';
 import useRestroMenu from '../utils/hooks/useRestroMenu';
 import useStatusOnline from '../utils/hooks/useStatusOnline';
+import RestoCategory from './RestoCategory';
 
 export default function RestaurantMenu() {
-    const [activeCategory, setActiveCategory] = useState({index:0,isActive:true});
+    const [activeCategory, setActiveCategory] = useState({ index: 0, isActive: true });
+    const [activeIndex,setActiveIndex] = useState(0)
     const {resId} = useParams();
     const menuData = useRestroMenu(resId);
     const onlineStatus = useStatusOnline();
@@ -22,7 +24,6 @@ export default function RestaurantMenu() {
      if (menuData.length === 0) {
         return <Shimmer />
     }
-    console.log(menuData)
     const { name, costForTwoMessage, avgRating, sla, cuisines, city, locality, totalRatingsString, feeDetails, category } = menuData[0]?.card?.card?.info
     const data = menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.map(item => {
         if (item.card.card.itemCards !== undefined) {
@@ -30,8 +31,9 @@ export default function RestaurantMenu() {
         }
     }).filter(item => item !== undefined)
     const itemCards = data
-    console.log(itemCards)
-    
+    //console.log(menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards)
+    const categoryList = menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c => c?.card?.["card"]?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory");
+    console.log(categoryList)
     const handelList = (index) => {
         if (index === activeCategory.index) {
        setActiveCategory({index,isActive:!activeCategory.isActive});
@@ -73,7 +75,7 @@ export default function RestaurantMenu() {
                 </div>
                 <div className="delivery-fee">
                     <img src={deliveryLogo} alt="delivery-logo"/>
-                    <p>3 kms | ₹{feeDetails?.fees[0]?.fee/100} Delivery fee will apply</p>
+                    {/* <p>3 kms | ₹{feeDetails?.fees[0]?.fee/100} Delivery fee will apply</p> */}
                 </div>
                 <hr className="doted-hr"/>
                 <div className="delivery-time-rate-containor">
@@ -87,34 +89,16 @@ export default function RestaurantMenu() {
                     </div>
                 </div>
                 <hr className="doted-hr"/>
-            </div>
-            {itemCards.map((item,index)=>(<div>
-            <div className="menulist-container">
-                <button onClick={(e)=>handelList(index)}>
-                    <h3>{category} <span>(15)</span></h3>
-                    <img src={uparrow} alt="down-pointer-logo" width="20px" height="20px"/>
-                </button>
-            </div>
-            {itemCards[index].map(item=>(
-                <div className={`menulist-item-container ${activeCategory.index === index  && activeCategory.isActive ? 'show' : 'hide'}`}>
-                <div className="menulist-item-inner-container">
-                    <div className="menulist-item-inner-container2">
-                        <div>
-                            <img src={nonVegLogo} alt="" height="40px" width="40px"/>
-                        </div>
-                        <p className="item-name"><b>{item?.card?.info?.category}</b></p>
-                        <p>₹ <span>{item?.card?.info?.price/100}</span></p>
-                        <p>{item?.card?.info?.description}</p>
-                    </div>
-                    <div className="menulist-item-image">
-                        <img src={CDN_URL+item?.card?.info?.imageId} alt="Item-image"/>
-                    </div>
-                </div>
-            </div>
-            ))}
-            
-                <div className="space"></div>
-            </div>))}
+                  </div>
+                  {categoryList.map((category,index) => (
+                      <RestoCategory
+                          category={category?.card?.card}
+                          setActiveIndex={() => setActiveIndex(index)}
+                          showMenu={activeIndex === index ? true :false}
+
+                      />
+                  ))}
+                 
             
             
         </div>

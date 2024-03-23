@@ -23,30 +23,57 @@ const Grocery = lazy(() => import('./components/Grocery'))
  */
 
 const AppLayout = () => {
-  const [count, setCount] = useState(0);
-  const [uniqueNum, setuniqueNumber] = useState(0)
-  const generateUniqueNumber = useCallback(() => {
-    const randNum = Math.random();
-    setuniqueNumber(randNum)
-  }, [uniqueNum, count])
+  // const [count, setCount] = useState(0);
+  // const [uniqueNum, setuniqueNumber] = useState(0)
+  // const generateUniqueNumber = useCallback(() => {
+  //   const randNum = Math.random();
+  //   setuniqueNumber(randNum)
+  // }, [uniqueNum, count])
 
-  const calculateMagicNumber = (count) => {
-    console.log('We are doing heavy calculations here')
-    let magicNumber = 0;
+  // const calculateMagicNumber = (count) => {
+  //   console.log('We are doing heavy calculations here')
+  //   let magicNumber = 0;
 
-    for (let i = 0; i < count + 1000000000; i++){
-       magicNumber+=i
-    }
-     return magicNumber;
-  }
-  const magicNumber = useMemo(() =>calculateMagicNumber(count),[count]);
+  //   for (let i = 0; i < count + 1000000000; i++){
+  //      magicNumber+=i
+  //   }
+  //    return magicNumber;
+  // }
+  // const magicNumber = useMemo(() =>calculateMagicNumber(count),[count]);
+  // const useCall = useCallback(() => {
+  //   console.log('Parent useCallback')
+  //  }, [])
+  // console.log('Parent Render')
+  //   useCall();
+  
+  // useMemo(() => {
+  //   console.log('Parent UseMemo')
+  // }, [])
+  // useEffect(() => {
+  //   console.log('Parent useEffect')
+  // }, [])
+   
+  
+  
+
+  /**
+   * Parent Render
+   * Parent useCallback
+   * Parent UseMemo
+   * 
+   * 
+   * Parent useEffect
+   * 
+   * 
+   */
 
 
   return (
     <>
-      <h1> { magicNumber}</h1>
-      <button onClick={() => setCount(count+1)}> Inc Count</button>
-      <Header generateUniqueNumber={ generateUniqueNumber} uniqueNum={uniqueNum} />
+      {/* <h1> { magicNumber}</h1>
+      <button onClick={() => setCount(count+1)}> Inc Count</button> */}
+      {/* <Header generateUniqueNumber={ generateUniqueNumber} uniqueNum={uniqueNum} /> */}
+      <Header />
     <Outlet />
     {/* /-> Body */}
       {/* <Body /> */}
