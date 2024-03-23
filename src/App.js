@@ -1,4 +1,4 @@
-import React, {useState,useEffect,lazy, Suspense} from 'react';
+import React, {useState,useEffect,lazy, Suspense, useCallback, useMemo} from 'react';
 import ReactDOM from 'react-dom/client';
 import '../index.css';
 import Header from './components/Header';
@@ -23,9 +23,30 @@ const Grocery = lazy(() => import('./components/Grocery'))
  */
 
 const AppLayout = () => {
+  const [count, setCount] = useState(0);
+  const [uniqueNum, setuniqueNumber] = useState(0)
+  const generateUniqueNumber = useCallback(() => {
+    const randNum = Math.random();
+    setuniqueNumber(randNum)
+  }, [uniqueNum, count])
+
+  const calculateMagicNumber = (count) => {
+    console.log('We are doing heavy calculations here')
+    let magicNumber = 0;
+
+    for (let i = 0; i < count + 1000000000; i++){
+       magicNumber+=i
+    }
+     return magicNumber;
+  }
+  const magicNumber = useMemo(() =>calculateMagicNumber(count),[count]);
+
+
   return (
     <>
-      <Header />
+      <h1> { magicNumber}</h1>
+      <button onClick={() => setCount(count+1)}> Inc Count</button>
+      <Header generateUniqueNumber={ generateUniqueNumber} uniqueNum={uniqueNum} />
     <Outlet />
     {/* /-> Body */}
       {/* <Body /> */}

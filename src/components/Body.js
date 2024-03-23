@@ -67,14 +67,14 @@ export default function Body() {
       {apiResp === true ?
 
       resData.length === 0 ? (<Shimmer />) : (
-      <div className='body'>
-      <div className='search'>
-        <button style={{marginRight:"10px"}} onClick={() => handleFilter()}>Top Rated</button>
-        <button onClick={() => clearFilter()}>Clear Filter</button>
-          <input type='text'style={{marginLeft:"10px"}} value={searchString} placeholder='search by restro name' onChange={(e) => setSearchString(e.target.value)} />
+      <div className='p-4 m-4'>
+      <div className=' flex m-4 gap-4'>
+        <button className='bg-slate-100 rounded-lg border-slate-400 w-[150px] h-10 p-4 items-center '  onClick={() => handleFilter()}>Top Rated</button>
+        <button className='bg-slate-100 rounded-lg border-slate-400 w-[150px] h-10 p-4 items-center ' onClick={() => clearFilter()}>Clear Filter</button>
+          <input className='border-blue-solid shadow-md rounded-lg' type='text' value={searchString} placeholder='search by restro name' onChange={(e) => setSearchString(e.target.value)} />
 
           </div>
-          <div className='res-container'>
+          <div className='flex flex-wrap'>
               {filteredDatas.length === 0 ? <div>No Records Found for your search</div> : 
               filteredDatas.map((data,index) => (
               <Link to={"/restaurants/"+data?.info.id}><RestroCard  resData={data?.info} key={data?.info.id}   /></Link>
