@@ -9,6 +9,8 @@ import ContactUs from './components/ContactUs';
 import Error from './components/Error';
 import RestaurantMenu from './components/RestaurantMenu';
 import { lazy } from 'react';
+import { Provider, useSelector } from 'react-redux';
+import appStore from './state/store';
 //import Grocery from './components/Grocery';
 const Grocery = lazy(() => import('./components/Grocery'))
 /**
@@ -23,6 +25,7 @@ const Grocery = lazy(() => import('./components/Grocery'))
  */
 
 const AppLayout = () => {
+
   // const [count, setCount] = useState(0);
   // const [uniqueNum, setuniqueNumber] = useState(0)
   // const generateUniqueNumber = useCallback(() => {
@@ -73,8 +76,9 @@ const AppLayout = () => {
       {/* <h1> { magicNumber}</h1>
       <button onClick={() => setCount(count+1)}> Inc Count</button> */}
       {/* <Header generateUniqueNumber={ generateUniqueNumber} uniqueNum={uniqueNum} /> */}
-      <Header />
+  <Header />
     <Outlet />
+    
     {/* /-> Body */}
       {/* <Body /> */}
       {/* /-> about */}
@@ -135,8 +139,10 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(
-<React.Fragment>
+  <React.Fragment>
+    <Provider store={appStore}>
   <RouterProvider router={router} />
+    </Provider>
 </React.Fragment>
 
 );

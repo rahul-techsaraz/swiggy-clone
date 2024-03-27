@@ -24,7 +24,8 @@ export default function RestaurantMenu() {
      if (menuData.length === 0) {
         return <Shimmer />
     }
-    const { name, costForTwoMessage, avgRating, sla, cuisines, city, locality, totalRatingsString, feeDetails, category } = menuData[0]?.card?.card?.info
+    console.log(menuData[0])
+    const {name,  costForTwoMessage, avgRating, sla, cuisines, city, locality, totalRatingsString, feeDetails, category } = menuData[2]?.card?.card?.info
     const data = menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.map(item => {
         if (item.card.card.itemCards !== undefined) {
             return item.card.card.itemCards; 
@@ -32,7 +33,7 @@ export default function RestaurantMenu() {
     }).filter(item => item !== undefined)
     const itemCards = data
     //console.log(menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards)
-    const categoryList = menuData[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c => c?.card?.["card"]?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory");
+    const categoryList = menuData[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c => c?.card?.["card"]?.["@type"] === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory");
     console.log(categoryList)
     const handelList = (index) => {
         if (index === activeCategory.index) {

@@ -7,6 +7,33 @@ import { Link } from 'react-router-dom';
 //Chunking
 //Lazy Loading
 //Dynamic Loading
+/**
+ * Redux Architecture
+ * 
+ * store:Keep our central state
+ * Actions=>
+ * Dispatch
+ * Reducer
+ * Subscribe
+ * 
+ * npm i react-redux, @reduxjs/toolkit
+ * Create the store and configure with slice
+ * Pass this store to Main Component
+ * Create Slice
+ * To get redux state data, call useSelector hooks
+ * to Dispatch the action call the useDispatch
+ * 
+ * TODO
+ * 1. Prevent to add duplicate products into the cart
+ * 2. Create one Cart Component and display the basic card details with custom product quantity
+ * 3. Remove the item from cart
+ * 4. clear cart item
+ * 5. if cart item is empty display , cart is empty , add one button to redirect on home page 
+ * 6. Fixed the card menu api dynamic key issue for swiggy api
+ * 
+ * @param {*} Component 
+ * @returns 
+ */
  const withPrometedRestCard = (Component) => {
 console.log(Component)
    return (props) => {
