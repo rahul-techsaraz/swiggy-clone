@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
+/**
+ * Redux is synchronous in nature
+ * To achive Async nature in redux , we have to use middleware(Thunk(Promise), Saga(Generator))
+ */
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {

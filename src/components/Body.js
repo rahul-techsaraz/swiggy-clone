@@ -3,6 +3,8 @@ import RestroCard from './RestroCard';
 import { SWIGGY_API_ENDPOINT } from '../utils/constants';
 import Shimmer from './Shimmer';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBodyData } from '../features/bodySlice';
 
 //Chunking
 //Lazy Loading
@@ -49,20 +51,25 @@ console.log(Component)
 }
 export default function Body() {
   //Special State Variable
-
-  const [resData, setResData] = useState([]);
-  const [filteredDatas, setFilteredDatas] = useState([])
-  const [apiResp, setApiResp] = useState(true)
+  const dispatch = useDispatch();
+const {resData,filteredDatas,isLoading,apiResp} = useSelector(state => state.body)
+  //const [resData, setResData] = useState([]);
   //const [count,setCount] = useState(0)
   let [searchString, setSearchString] = useState('');
   const fetchData = async () => {
-    const res = await fetch(SWIGGY_API_ENDPOINT);
+    try {
+      const res = await fetch(SWIGGY_API_ENDPOINT);
     setApiResp(res.ok)
     const json = await res.json();
     //console.log(json)
     const restroList = await json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
     setResData(restroList)
     setFilteredDatas(restroList)
+    }
+    catch (err) {
+      console.log(err)
+    }
+    
     
   }
   const WithPromotedComponent = withPrometedRestCard(RestroCard);
@@ -72,21 +79,22 @@ export default function Body() {
   const handleFilter = () => {
     const filteredData = resData.filter(data => data.info.avgRating > 4.5);
     //console.log(filteredData)
-    setFilteredDatas(filteredData)
+   // setFilteredDatas(filteredData)
   }
   const clearFilter = () => {
-    setFilteredDatas(resData)
+   // setFilteredDatas(resData)
   }
   const handleSearch = (filterValue) => {
     //console.log(count)
     const filteredData = resData.filter(data =>  data.info.name.toUpperCase().includes(filterValue));
     //console.log(filteredData)
-    setFilteredDatas(filteredData);
+   // setFilteredDatas(filteredData);
     //setCount(count+1)
   }
   useEffect(() => {
     // setInterval(fetchData(),6000)
-    fetchData()
+    //fetchData()
+    dispatch(fetchBodyData({url:SWIGGY_API_ENDPOINT}))
     
   },[])
   useEffect(() => {
@@ -104,9 +112,9 @@ console.log(resData)
 
   return (
     <>
-      {apiResp === true ?
+      {apiResp  ?
 
-      resData.length === 0 ? (<Shimmer />) : (
+      isLoading  ? (<Shimmer />) : (
       <div className='p-4 m-4'>
       <div className=' flex m-4 gap-4'>
         <button className='bg-slate-100 rounded-lg border-slate-400 w-[150px] h-10 p-4 items-center '  onClick={() => handleFilter()}>Top Rated</button>
